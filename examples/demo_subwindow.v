@@ -34,7 +34,7 @@ fn main() {
 			),
 			ui.subwindow(
 				id: "sw"
-				x: 0, y: 0
+				x: 400, y: 300
 				layout: uic.colorbox(id: 'cbox', light: true, hsl: false)
 			)
 		]
