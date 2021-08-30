@@ -15,7 +15,7 @@ mut:
 
 fn main() {
 	mut app := &App{}
-	window := ui.window(
+	mut window := ui.window(
 		width: win_width
 		height: win_height
 		title: 'Resizable Window'
@@ -32,24 +32,16 @@ fn main() {
 					ui.button(text: 'Add user', onclick: btn_click),
 				]
 			),
-			ui.subwindow(
-				id: "sw"
-				x: 400, y: 300
-				layout: uic.colorbox(id: 'cbox', light: true, hsl: false)
-			)
 		]
 	)
+	// This add a unique colorbox
+	uic.colorbox_add(mut window)
 	app.window = window
 	ui.run(window)
 }
 
 fn btn_click(a voidptr, b &ui.Button) {
-	mut s := b.ui.window.subwindow("sw")
-	cb_layout := b.ui.window.stack("cbox")
-	mut cb := uic.component_colorbox(cb_layout)
 	rect := b.ui.window.stack("row")
-	cb.connect(&rect.bg_color)
-	s.set_visible(s.hidden)
-	// ui.message_box('Built with V UI')
-	// b.ui.window.message('Built with V UI\nThus \nAnd')
+	// connect the colorbox to the rect_bg_color
+	uic.colorbox_connect(b.ui.window, &rect.bg_color, 400, 300)
 }
