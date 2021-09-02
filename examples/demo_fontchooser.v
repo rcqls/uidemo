@@ -5,9 +5,9 @@ import uicomponent as uic
 
 struct App {
 mut:
-	window    &ui.Window = 0
-	log       string
-	text      string = 'il était une fois V ....'
+	window &ui.Window = 0
+	log    string
+	text   string = 'il était une fois V ....'
 }
 
 fn main() {
@@ -25,11 +25,10 @@ fn main() {
 			ui.row(
 				widths: [ui.compact, ui.stretch]
 				heights: [ui.compact, ui.stretch]
-				children: [
-					uic.fontbutton (
-						text: "font"
-						dtw: c
-					),
+				children: [uic.fontbutton(
+					text: 'font'
+					dtw: c
+				),
 					ui.column(
 						children: [
 							ui.textbox(
@@ -47,7 +46,7 @@ fn main() {
 	uic.fontchooser_add(mut window, lb_change)
 	ui.run(app.window)
 }
- 
+
 fn on_draw(c &ui.CanvasLayout, app &App) {
 	mut dtw := ui.DrawTextWidget(c)
 	dtw.load_current_style()

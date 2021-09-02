@@ -45,14 +45,21 @@ fn main() {
 		mode: .resizable
 		on_scroll: on_scroll
 		children: [
-		ui.column(margin_: 8, heights: [ui.stretch, ui.compact], children: [
-			ui.column(heights: ui.compact, spacing: 4, children: tasks(app)),
-			ui.row(widths: [ui.stretch, ui.compact], spacing: 4, children: [
-				ui.textbox(text: &app.input, on_enter: on_enter),
-				ui.button(text: '+', onclick: btn_add_task),
-			]),
-		]),
-	])
+			ui.column(
+				margin_: 8
+				heights: [ui.stretch, ui.compact]
+				children: [ui.column(heights: ui.compact, spacing: 4, children: tasks(app)),
+					ui.row(
+						widths: [ui.stretch, ui.compact]
+						spacing: 4
+						children: [ui.textbox(text: &app.input, on_enter: on_enter),
+							ui.button(text: '+', onclick: btn_add_task),
+						]
+					),
+				]
+			),
+		]
+	)
 
 	app.window = window
 	ui.run(window)
@@ -69,20 +76,28 @@ fn tasks(app &State) []ui.Widget {
 }
 
 fn entry(task Task) &ui.Stack {
-	return ui.row(widths: [ui.compact, ui.stretch, ui.compact], spacing: 4, children: [
-		ui.checkbox(checked: task.done),
-		ui.label(text: task.title),
-		ui.button(text: 'E', onclick: btn_edit_task),
-	])
+	return ui.row(
+		widths: [ui.compact, ui.stretch, ui.compact]
+		spacing: 4
+		children: [
+			ui.checkbox(checked: task.done),
+			ui.label(text: task.title),
+			ui.button(text: 'E', onclick: btn_edit_task),
+		]
+	)
 }
 
 fn edit_entry(mut app State, task Task) &ui.Stack {
 	app.edit_input = task.title
 
-	return ui.row(widths: [ui.stretch, ui.compact], spacing: 4, children: [
-		ui.textbox(text: &app.edit_input, on_enter: txb_enter_edit, is_focused: true),
-		ui.button(text: 'D', onclick: btn_remove_task),
-	])
+	return ui.row(
+		widths: [ui.stretch, ui.compact]
+		spacing: 4
+		children: [
+			ui.textbox(text: &app.edit_input, on_enter: txb_enter_edit, is_focused: true),
+			ui.button(text: 'D', onclick: btn_remove_task),
+		]
+	)
 }
 
 fn entries_column(w &ui.Window) ?&ui.Stack {

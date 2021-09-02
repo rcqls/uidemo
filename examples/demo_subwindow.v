@@ -1,6 +1,5 @@
 import ui
 import uicomponent as uic
-
 import gx
 
 const (
@@ -11,7 +10,7 @@ const (
 struct App {
 mut:
 	window &ui.Window = 0
-	color  gx.Color = gx.blue
+	color  gx.Color   = gx.blue
 }
 
 fn main() {
@@ -25,7 +24,7 @@ fn main() {
 		state: app
 		children: [
 			ui.row(
-				id: "row"
+				id: 'row'
 				margin_: .3
 				widths: .2
 				heights: .4
@@ -34,13 +33,13 @@ fn main() {
 					ui.button(text: 'Add user', bg_color: &app.color, onclick: btn_click),
 					ui.row(
 						children: [
-							rect
+							rect,
 							uic.button_color(
-								id: "btn_col"
+								id: 'btn_col'
 								bg_color: &rect.color
-							)
+							),
 						]
-					)
+					),
 				]
 			),
 		]
@@ -53,7 +52,7 @@ fn main() {
 }
 
 fn btn_click(a voidptr, b &ui.Button) {
-	rect := b.ui.window.stack("row")
+	rect := b.ui.window.stack('row')
 	// connect the colorbox to the rect_bg_color
-	uic.colorbox_connect(b.ui.window, &rect.bg_color, 400, 300)
+	uic.colorbox_connect(b.ui.window, &rect.bg_color)
 }

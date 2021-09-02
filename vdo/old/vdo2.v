@@ -8,7 +8,7 @@ const (
 
 struct Task {
 mut:
-	id	  int
+	id    int
 	title string
 	done  bool
 }
@@ -48,15 +48,29 @@ fn main() {
 		title: w_title
 		mode: .resizable
 		// on_scroll: on_scroll
-	children: [
-		ui.column(margin_: 8, heights: [ui.stretch, ui.compact], children: [
-			ui.column(id: "entries_column", heights: ui.compact, spacing: 4,  scrollview: true, children: tasks(app)),
-			ui.row(widths: [ui.stretch, ui.compact], spacing: 4, children: [
-				ui.textbox(text: &app.input, on_enter: on_enter),
-				ui.button(text: '+', onclick: btn_add_task),
-			]),
-		]),
-	])
+		children: [
+			ui.column(
+				margin_: 8
+				heights: [ui.stretch, ui.compact]
+				children: [
+					ui.column(
+					id: 'entries_column'
+					heights: ui.compact
+					spacing: 4
+					scrollview: true
+					children: tasks(app)
+				),
+					ui.row(
+						widths: [ui.stretch, ui.compact]
+						spacing: 4
+						children: [ui.textbox(text: &app.input, on_enter: on_enter),
+							ui.button(text: '+', onclick: btn_add_task),
+						]
+					),
+				]
+			),
+		]
+	)
 
 	app.window = window
 	ui.run(window)
@@ -73,23 +87,38 @@ fn tasks(app &State) []ui.Widget {
 }
 
 fn entry(task Task) &ui.Stack {
-	return ui.row(id: "task_show_row_$task.id", widths: [ui.compact, ui.stretch, ui.compact], spacing: 4, children: [
-		ui.checkbox(id: "task_show_cb_$task.id", checked: task.done, on_click: cb_task),
-		ui.label(id: "task_show_lab_$task.id", text: task.title.clone()),
-		ui.button(id: "task_show_btn_$task.id", text: 'E', onclick: btn_edit_task),
-	])
+	return ui.row(
+		id: 'task_show_row_$task.id'
+		widths: [ui.compact, ui.stretch, ui.compact]
+		spacing: 4
+		children: [
+			ui.checkbox(id: 'task_show_cb_$task.id', checked: task.done, on_click: cb_task),
+			ui.label(id: 'task_show_lab_$task.id', text: task.title.clone()),
+			ui.button(id: 'task_show_btn_$task.id', text: 'E', onclick: btn_edit_task),
+		]
+	)
 }
 
 fn edit_entry(mut app State, task_index int) &ui.Stack {
 	task_id := app.tasks[task_index].id
 	titles := app.tasks.map(it.title)
-	println("edit_entry tasks titles: $titles")
+	println('edit_entry tasks titles: $titles')
 	title := app.tasks[task_index].title
-	println("add edit_entry $task_id at $task_index title: <$title>")
-	return ui.row(id: "task_edit_row_$task_id", widths: [ui.stretch, ui.compact], spacing: 4, children: [
-		ui.textbox(id: "task_edit_tb_$task_id", text: &app.tasks[task_index].title, on_char: txb_enter_edit, is_focused: true),
-		ui.button(id: "task_edit_btn_$task_id", text: 'D', onclick: btn_remove_task),
-	])
+	println('add edit_entry $task_id at $task_index title: <$title>')
+	return ui.row(
+		id: 'task_edit_row_$task_id'
+		widths: [ui.stretch, ui.compact]
+		spacing: 4
+		children: [
+			ui.textbox(
+				id: 'task_edit_tb_$task_id'
+				text: &app.tasks[task_index].title
+				on_char: txb_enter_edit
+				is_focused: true
+			),
+			ui.button(id: 'task_edit_btn_$task_id', text: 'D', onclick: btn_remove_task),
+		]
+	)
 }
 
 fn entries_column(w &ui.Window) ?&ui.Stack {
@@ -102,12 +131,12 @@ fn entries_column(w &ui.Window) ?&ui.Stack {
 }
 
 fn cb_task(cb &ui.CheckBox, mut app State) {
-	task_id := cb.id.split("_").last().int()
+	task_id := cb.id.split('_').last().int()
 	win := cb.ui.window
-	
-	mut column := win.stack("entries_column")
 
-	index := column.child_index_by_id("task_show_row_$task_id")
+	mut column := win.stack('entries_column')
+
+	index := column.child_index_by_id('task_show_row_$task_id')
 	app.tasks[index].done = cb.checked
 }
 
@@ -116,14 +145,14 @@ fn btn_add_task(mut app State, btn &ui.Button) {
 }
 
 fn btn_edit_task(mut app State, btn &ui.Button) {
-	task_id := btn.id.split("_").last().int()
+	task_id := btn.id.split('_').last().int()
 	win := btn.ui.window
-	
-	mut column := win.stack("entries_column")
 
-	index := column.child_index_by_id("task_show_row_$task_id")
+	mut column := win.stack('entries_column')
 
-	println("btn_edit_task $task_id at $index")
+	index := column.child_index_by_id('task_show_row_$task_id')
+
+	println('btn_edit_task $task_id at $index')
 
 	if index > -1 {
 		column.remove(at: index)
@@ -137,14 +166,14 @@ fn btn_remove_task(mut app State, btn &ui.Button) {
 		app.edit = false
 		return
 	}
-	
-	task_id := btn.id.split("_").last().int()
+
+	task_id := btn.id.split('_').last().int()
 
 	win := btn.ui.window
-	mut column := win.stack("entries_column")
+	mut column := win.stack('entries_column')
 
-	index := column.child_index_by_id("task_edit_row_$task_id")
-	println("btn_remove_task $task_id task at $index")
+	index := column.child_index_by_id('task_edit_row_$task_id')
+	println('btn_remove_task $task_id task at $index')
 	if index > -1 {
 		column.remove(at: index)
 		app.tasks.delete(index)
@@ -152,16 +181,15 @@ fn btn_remove_task(mut app State, btn &ui.Button) {
 }
 
 fn txb_enter_edit(mut app State, tb &ui.TextBox, keycode u32) {
-
 	if keycode == 13 {
 		titles := app.tasks.map(it.title)
-		println("tasks titles: $titles")
-		println("on_enter: $app.tasks")
-		task_id := tb.id.split("_").last().int()
+		println('tasks titles: $titles')
+		println('on_enter: $app.tasks')
+		task_id := tb.id.split('_').last().int()
 		win := tb.ui.window
-		mut column := win.stack("entries_column")
+		mut column := win.stack('entries_column')
 
-		index := column.child_index_by_id("task_edit_row_$task_id")
+		index := column.child_index_by_id('task_edit_row_$task_id')
 
 		if index > -1 {
 			column.remove(at: index)
@@ -171,7 +199,6 @@ fn txb_enter_edit(mut app State, tb &ui.TextBox, keycode u32) {
 			)
 		}
 	}
-
 }
 
 fn add_task(mut app State, window &ui.Window) {
@@ -184,7 +211,7 @@ fn add_task(mut app State, window &ui.Window) {
 	app.tasks << new_task
 	app.input = ''
 
-	mut column := window.stack("entries_column")
+	mut column := window.stack('entries_column')
 
 	column.add(
 		child: entry(new_task)
