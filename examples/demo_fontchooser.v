@@ -25,6 +25,7 @@ fn main() {
 		height: 600
 		children: [
 			ui.column(
+				margin_: 10
 				heights: [20.0, ui.stretch]
 				spacing: 10
 				children: [ui.row(
