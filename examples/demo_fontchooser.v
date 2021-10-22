@@ -1,5 +1,5 @@
 import ui
-import uicomponent as uic
+import ui.component as uic
 import gx
 
 struct App {
@@ -57,8 +57,8 @@ fn main() {
 		]
 	)
 	app.window = window
-	uic.fontchooser_add(mut window)
-	uic.colorbox_add(mut window)
+	uic.fontchooser_subwindow_add(mut window)
+	uic.colorbox_subwindow_add(mut window)
 	ui.run(app.window)
 }
 
